@@ -73,7 +73,7 @@ function addMarkers() {
             map: map,
             title: stop.name,
             icon: {
-                url: 'bus.png',
+                url: '',
                 scaledSize: new google.maps.Size(30, 30)
             }
         });
@@ -182,7 +182,7 @@ function displayRoute(userLocation, stopLocation, stopName) {
                 position: leg.end_location,
                 map: map,
                 icon: {
-                    url: 'flag.png', // URL del icono de meta
+                    url: 'bus.png', // URL del icono de meta
                     scaledSize: new google.maps.Size(30, 30) // Ajusta el tamaño del icono según sea necesario
                 }
             });
