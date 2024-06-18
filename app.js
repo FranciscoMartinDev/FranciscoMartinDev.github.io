@@ -193,9 +193,9 @@ function displayRoute(userLocation, stopLocation, stopName) {
             // Mostrar información de distancia y tiempo
             const infoDiv = document.getElementById('info');
             infoDiv.innerHTML = `
-                <p>Parada más cercana: ${stopName}</p>
-                <p>Distancia: ${leg.distance.text}</p>
-                <p>Tiempo estimado caminando: ${leg.duration.text}</p>
+                <p data-text-es="Parada más cercana" data-text-en="Nearest stop">Parada más cercana</p>: ${stopName}<br>
+                <p data-text-es="Distancia" data-text-en="Distance">Distancia</p>: ${leg.distance.text}<br>
+                <p data-text-es="Tiempo estimado caminando" data-text-en="Estimated walking time">Tiempo estimado caminando</p>: ${leg.duration.text}
             `;
 
             document.getElementById('info-card').style.display = 'block';
@@ -217,4 +217,23 @@ function startNavigation() {
     } else {
         alert("No se pudo iniciar la navegación. Asegúrate de haber seleccionado una ubicación y encontrado la parada más cercana.");
     }
+}
+
+function setLanguage(language) {
+    const elements = document.querySelectorAll('[data-text-es], [data-text-en]');
+
+    elements.forEach(element => {
+        const text = element.getAttribute(`data-text-${language}`);
+        if (text) {
+            element.innerText = text;
+        }
+    });
+
+    const placeholders = document.querySelectorAll('input[data-placeholder-es], input[data-placeholder-en]');
+    placeholders.forEach(input => {
+        const placeholder = input.getAttribute(`data-placeholder-${language}`);
+        if (placeholder) {
+            input.setAttribute('placeholder', placeholder);
+        }
+    });
 }
