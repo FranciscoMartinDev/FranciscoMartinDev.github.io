@@ -5,6 +5,7 @@ let directionsRenderer;
 let autocomplete;
 let userLocationGlobal;
 let nearestStopLocationGlobal;
+let streetViewPanorama;
 
 function initMap() {
     // Estilos del mapa para ocultar otros marcadores y puntos de interés
@@ -75,7 +76,7 @@ function addMarkers() {
             map: map,
             title: stop.name,
             icon: {
-                url: 'bus.png', // URL de la imagen del icono del autobús
+                url: 'bus.png', // URL de la imagen del icono del autobús dentro de un círculo blanco
                 scaledSize: new google.maps.Size(30, 30) // Ajusta el tamaño del icono según sea necesario
             }
         });
@@ -197,6 +198,7 @@ function displayRoute(userLocation, stopLocation, stopName) {
                 <p>Tiempo estimado caminando: ${leg.duration.text}</p>
             `;
 
+            document.getElementById('info-card').style.display = 'block';
             document.getElementById('start-navigation').style.display = 'block';
         } else {
             console.error('Failed to load directions:', status);

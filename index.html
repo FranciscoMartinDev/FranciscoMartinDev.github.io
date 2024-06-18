@@ -1,33 +1,28 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Localizador de Paradas</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAR0ImIvmeSQKvYs9-ZtFlCPwEa2Se1oUQ&libraries=places,geometry&callback=initMap" async defer></script>
-</head>
-<body>
-    <div class="container">
-        <h1 class="text-center my-4">Tu parada más cercana</h1>
-        <div id="hotel-input-container" class="form-group">
-            <input id="hotel-input" type="text" class="form-control" placeholder="Escriba el nombre de su hotel" />
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>Localizador de Paradas</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAR0ImIvmeSQKvYs9-ZtFlCPwEa2Se1oUQ&libraries=places,geometry&callback=initMap" async defer></script>
+    </head>
+    <body>
+        <div id="map"></div>
+        <div class="search-container">
+            <input id="hotel-input" type="text" class="form-control" placeholder="Buscar tu hotel" />
+            <button class="btn btn-primary" onclick="locateAndFindNearest()">Buscar      <i class="fa fa-search"></i></button>
         </div>
-        <div class="button-container mb-3">
-            <button class="btn btn-primary btn-block" onclick="locateAndFindNearest()">Encuentra la parada más cercana</button>
+        <div id="info-card" class="card" style="display: none;">
+            <div class="card-body">
+                <h5 class="card-title">Información de la Parada</h5>
+                <p id="info"></p>
+                <button id="start-navigation" class="btn btn-success btn-block" style="display: none;" onclick="startNavigation()">Iniciar camino en Google Maps</button>
+            </div>
         </div>
-        <div id="info" class="text-center"></div>
-        <div class="button-container mb-3">
-            <button id="start-navigation" class="btn btn-success btn-block" style="display: none;" onclick="startNavigation()">Iniciar camino en Google Maps</button>
-        </div>
-        <div id="map" style="height: 60vh;"></div>
-        <div id="street-view" style="width: 100%; height: 400px; margin-top: 20px; display: none;"></div>
-        <div id="back-button-container" class="button-container mb-3" style="display: none;">
-            <button id="back-button" class="btn btn-secondary btn-block" onclick="exitStreetView()">VOLVER ATRÁS</button>
-        </div>
-    </div>
-    <script src="app.js"></script>
-</body>
-</html>
+        <script src="app.js"></script>
+    </body>
+    </html>
