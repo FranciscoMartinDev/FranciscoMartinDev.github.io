@@ -64,7 +64,7 @@ body {
 
 .language-switcher {
     position: absolute;
-    margin-right: 0.33vw;
+    margin-right: -1vw;
     margin-top: 3%;
     right: 20px;
 }
