@@ -5,10 +5,8 @@ let directionsRenderer;
 let autocomplete;
 let userLocationGlobal;
 let nearestStopLocationGlobal;
-let streetViewPanorama;
 
 function initMap() {
-    // Estilos del mapa para ocultar otros marcadores y puntos de interés
     const mapStyles = [
         {
             featureType: "poi",
@@ -23,7 +21,7 @@ function initMap() {
     ];
 
     map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 36.67726010874127, lng: -4.493653914698043 }, // Centro en el Aeropuerto de Málaga
+        center: { lat: 36.67726010874127, lng: -4.493653914698043 },
         zoom: 12,
         styles: mapStyles
     });
@@ -31,7 +29,7 @@ function initMap() {
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer({
         map: map,
-        suppressMarkers: true // Para suprimir los marcadores predeterminados
+        suppressMarkers: true
     });
 
     autocomplete = new google.maps.places.Autocomplete(document.getElementById('hotel-input'));
@@ -50,7 +48,6 @@ function initMap() {
         findNearestStopAndDisplayRoute(userLocation.lat(), userLocation.lng());
     });
 
-    // Cargar los datos de las paradas desde un archivo GEOJSON
     fetch('stops.geojson')
         .then(response => response.json())
         .then(data => {
@@ -76,8 +73,8 @@ function addMarkers() {
             map: map,
             title: stop.name,
             icon: {
-                url: 'bus.png', // URL de la imagen del icono del autobús dentro de un círculo blanco
-                scaledSize: new google.maps.Size(30, 30) // Ajusta el tamaño del icono según sea necesario
+                url: 'bus.png',
+                scaledSize: new google.maps.Size(30, 30)
             }
         });
 
@@ -193,9 +190,9 @@ function displayRoute(userLocation, stopLocation, stopName) {
             // Mostrar información de distancia y tiempo
             const infoDiv = document.getElementById('info');
             infoDiv.innerHTML = `
-                <p data-text-es="Parada más cercana" data-text-en="Nearest stop">Parada más cercana</p>: ${stopName}<br>
-                <p data-text-es="Distancia" data-text-en="Distance">Distancia</p>: ${leg.distance.text}<br>
-                <p data-text-es="Tiempo estimado caminando" data-text-en="Estimated walking time">Tiempo estimado caminando</p>: ${leg.duration.text}
+                <strong data-text-es="Parada más cercana" data-text-en="Nearest stop">Parada más cercana</strong>: ${stopName}<br>
+                <strong data-text-es="Distancia" data-text-en="Distance">Distancia</strong>: ${leg.distance.text}<br>
+                <strong data-text-es="Tiempo estimado caminando" data-text-en="Estimated walking time">Tiempo estimado caminando</strong>: ${leg.duration.text}
             `;
 
             document.getElementById('info-card').style.display = 'block';

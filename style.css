@@ -64,10 +64,11 @@ body {
 
 .language-switcher {
     position: absolute;
-    
+    margin-right: 13%;
+    margin-top: 3%;
     right: 20px;
 }
 
 .language-switcher .btn {
-    margin: 5px;
+    margin-bottom: 5px;
 }
