@@ -73,7 +73,7 @@ function addMarkers() {
             map: map,
             title: stop.name,
             icon: {
-                url: '',
+                url: 'point.png',
                 scaledSize: new google.maps.Size(30, 30)
             }
         });
