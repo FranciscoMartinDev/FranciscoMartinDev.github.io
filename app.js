@@ -100,6 +100,17 @@ function locateAndFindNearest() {
     findNearestStopAndDisplayRoute(userLocation.lat(), userLocation.lng());
 }
 
+function getEuclideanDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371; // Radio de la Tierra en km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distancia en km
+}
+
 function findNearestStopAndDisplayRoute(lat, lng) {
     if (stops.length === 0) {
         console.error("No stops data available.");
@@ -108,11 +119,20 @@ function findNearestStopAndDisplayRoute(lat, lng) {
     }
 
     const userLocation = new google.maps.LatLng(lat, lng);
-    const batchSize = 25;
+
+    // Calcular la distancia euclidiana simple a todas las paradas
+    const stopsWithDistance = stops.map(stop => {
+        const distance = getEuclideanDistance(lat, lng, stop.lat, stop.lng);
+        return { ...stop, distance };
+    });
+
+    // Ordenar las paradas por distancia y seleccionar las 15 más cercanas
+    const closestStops = stopsWithDistance.sort((a, b) => a.distance - b.distance).slice(0, 15);
+
     let shortestDistance = Infinity;
     let nearestStop = null;
 
-    const calculateDistances = (batch, index) => {
+    const calculateDistances = (batch) => {
         return new Promise((resolve, reject) => {
             let service = new google.maps.DistanceMatrixService();
             service.getDistanceMatrix({
@@ -138,10 +158,7 @@ function findNearestStopAndDisplayRoute(lat, lng) {
 
     const processBatches = async () => {
         try {
-            for (let i = 0; i < stops.length; i += batchSize) {
-                const batch = stops.slice(i, i + batchSize);
-                await calculateDistances(batch, i / batchSize);
-            }
+            await calculateDistances(closestStops);
             if (nearestStop) {
                 const nearestStopLocation = new google.maps.LatLng(nearestStop.lat, nearestStop.lng);
                 nearestStopLocationGlobal = nearestStopLocation;
@@ -173,8 +190,8 @@ function displayRoute(userLocation, stopLocation, stopName) {
                 position: leg.start_location,
                 map: map,
                 icon: {
-                    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/man.png', // URL del icono de persona
-                    scaledSize: new google.maps.Size(30, 30) // Ajusta el tamaño del icono según sea necesario
+                    url: 'https://maps.gstatic.com/mapfiles/ms2/micons/man.png',
+                    scaledSize: new google.maps.Size(30, 30)
                 }
             });
 
@@ -182,12 +199,11 @@ function displayRoute(userLocation, stopLocation, stopName) {
                 position: leg.end_location,
                 map: map,
                 icon: {
-                    url: 'bus.png', // URL del icono de meta
-                    scaledSize: new google.maps.Size(30, 30) // Ajusta el tamaño del icono según sea necesario
+                    url: 'bus.png',
+                    scaledSize: new google.maps.Size(30, 30)
                 }
             });
 
-            // Mostrar información de distancia y tiempo
             const infoDiv = document.getElementById('info');
             infoDiv.innerHTML = `
                 <strong data-text-es="Parada más cercana" data-text-en="Nearest stop">Parada más cercana</strong>: ${stopName}<br>
